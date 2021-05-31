@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_componentes/src/providers/menu_provider.dart';
 import 'package:flutter_componentes/src/utils/icon_string_util.dart';
 
+import 'package:flutter_componentes/src/pages/alert_page.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -22,13 +24,13 @@ class HomePage extends StatelessWidget {
         print(snapshot.data);
 
         return ListView(
-          children: _crearListaItems(snapshot.data),
+          children: _crearListaItems(snapshot.data, context),
         );
       },
     );
   }
 
-  List<Widget> _crearListaItems(List<dynamic>? data) {
+  List<Widget> _crearListaItems(List<dynamic>? data, BuildContext context) {
     final List<Widget> opciones = [];
 
     // data puedeser null, por eso se agrega el simbolo ?.
@@ -40,7 +42,10 @@ class HomePage extends StatelessWidget {
           Icons.keyboard_arrow_right,
           color: Colors.blue,
         ),
-        onTap: () {},
+        onTap: () {
+          final route = MaterialPageRoute(builder: (context) => AlertPage());
+          Navigator.push(context, route);
+        },
       );
       opciones..add(widgetTemp)..add(Divider());
     });
