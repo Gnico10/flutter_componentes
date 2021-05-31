@@ -13,24 +13,40 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _lista() {
-    print(menuProvider.opciones);
-    return ListView(
-      children: _crearListaItems(),
+    return FutureBuilder(
+      future: menuProvider.cargarData(),
+      initialData: [],
+      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+        print('builder');
+        print(snapshot.data);
+
+        return ListView(
+          children: _crearListaItems(snapshot.data),
+        );
+      },
     );
   }
 
-  List<Widget> _crearListaItems() {
-    return [
-      ListTile(title: Text('Hola')),
-      Divider(),
-      ListTile(title: Text('Hola')),
-      Divider(),
-      ListTile(title: Text('Hola')),
-      Divider(),
-      ListTile(title: Text('Hola')),
-      Divider(),
-      ListTile(title: Text('Hola')),
-      Divider(),
-    ];
+  List<Widget> _crearListaItems(List<dynamic>? data) {
+    final List<Widget> opciones = [];
+
+    // data puedeser null, por eso se agrega el simbolo ?.
+    data?.forEach((opt) {
+      final widgetTemp = ListTile(
+        title: Text(opt['texto']),
+        leading: Icon(
+          Icons.account_circle,
+          color: Colors.blue,
+        ),
+        trailing: Icon(
+          Icons.keyboard_arrow_right,
+          color: Colors.blue,
+        ),
+        onTap: () {},
+      );
+      opciones..add(widgetTemp)..add(Divider());
+    });
+
+    return opciones;
   }
 }
